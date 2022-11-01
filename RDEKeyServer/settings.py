@@ -15,6 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+BASE_URL = "http://localhost:8000"
 
 # Application definition
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "qr_code",
     "RDEDocuments",
 ]
 
