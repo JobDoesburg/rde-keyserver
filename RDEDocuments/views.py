@@ -22,7 +22,10 @@ class EnrollView(LoginRequiredMixin, TemplateView):
         RDEDocument.tickets.filter(user=request.user).delete()
         self.ticket = RDEDocument.tickets.create(user=self.request.user)
         return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["ticket_url"] = settings.BASE_URL + reverse("api:enroll", args=[self.ticket])
+        context["ticket_url"] = settings.BASE_URL + reverse(
+            "api:enroll", args=[self.ticket]
+        )
         return context

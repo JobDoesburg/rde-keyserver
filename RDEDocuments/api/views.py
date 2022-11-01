@@ -35,6 +35,7 @@ class DocumentSearchFilter(filters.SearchFilter):
             return queryset.none()
         return super().filter_queryset(request, queryset, view)
 
+
 class SearchAPIView(ListAPIView):
     name = "Key server search"
     description = "Search for RDE documents by email"

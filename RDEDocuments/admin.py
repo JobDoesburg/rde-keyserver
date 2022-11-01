@@ -6,4 +6,9 @@ from RDEDocuments.models import RDEDocument
 
 @register(RDEDocument)
 class RDEDocumentAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        "id",
+        "user",
+        "created",
+        "enrollment_parameters",
+    )
