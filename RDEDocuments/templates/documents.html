@@ -7,28 +7,24 @@
         <div class="row">
             <div class="col-12">
                 <h1>My RDE Documents</h1>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Created</th>
-                            <th scope="col">#</th>
-                            <th scope="col">Data</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {% for document in object_list %}
-                          <tr>
-                              <td>{{ document.enrollment_parameters.documentName }}</td>
-                              <td>{{ document.created }}</td>
-                              <th scope="row">{{ document.id }}</th>
-                              <td class="text-wrap" style="max-width: 100px">{{ document.enrollment_parameters }}</td>
-                          </tr>
-                      {% endfor %}
-                      </tbody>
-                    </table>
-                    <a href="{% url 'enroll' %}" type="button" class="btn btn-primary">Enroll new document</a>
+                <p>View your enrolled RDE documents.</p>
+                <a href="{% url 'enroll' %}" type="button" class="btn btn-primary my-3">Enroll new document</a>
+                <div class="accordion" id="documents">
+                    {% for document in object_list %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-document-{{ document.id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#document-{{ document.id }}" aria-expanded="false" aria-controls="document-{{ document.id }}">
+                                <strong class="me-2">{{ document.enrollment_parameters.documentName}}</strong> {{ document.id }} ({{ document.created }})
+                            </button>
+                        </h2>
+                        <div id="document-{{ document.id }}" class="accordion-collapse collapse" aria-labelledby="heading-document-{{ document.id }}" data-bs-parent="#documents">
+                            <div class="accordion-body">
+                                <strong>Enrollment parameters:</strong><br>
+                                <code class="user-select-all">{{ document.enrollment_parameters }}</code>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
