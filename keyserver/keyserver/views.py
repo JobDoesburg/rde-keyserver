@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 
-from RDEDocuments.models import RDEDocument
+from .models import RDEDocument
 
 
 class DocumentsView(LoginRequiredMixin, ListView):

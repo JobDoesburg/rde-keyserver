@@ -1,9 +1,9 @@
 from os import path
+from pathlib import Path
 
 import saml2
-import saml2.saml
-
-from pathlib import Path
+from saml2 import xmldsig
+from saml2 import saml
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,9 +18,9 @@ SECRET_KEY = "django-insecure-nta2^r4xet@@6r#*ue*%a8(4v2&_2%&6%xe1euxm_(lx1#zay^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["keyserver.rde.jobdoesburg.dev", "localhost", "127.0.0.1"]
 
-BASE_URL = "http://localhost:8000"
+BASE_URL = "https://keyserver.rde.jobdoesburg.dev"
 
 # Application definition
 
@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "djangosaml2",
     "qr_code",
-    "RDEDocuments",
+    "config",
+    "keyserver",
 ]
 
 MIDDLEWARE = [
@@ -48,7 +49,7 @@ MIDDLEWARE = [
     "djangosaml2.middleware.SamlSessionMiddleware",
 ]
 
-ROOT_URLCONF = "RDEKeyServer.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -66,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "RDEKeyServer.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
@@ -116,6 +117,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = BASE_DIR.parent / "static"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -135,56 +138,54 @@ LOGIN_REDIRECT_URL = "/"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SAML_USE_NAME_ID_AS_USERNAME = True
-BASEDIR = path.dirname(path.abspath(__file__))
 SAML_ATTRIBUTE_MAPPING = {
-    "uid": ("username",),
+    "eduPersonTargetedID": ("username",),
     "mail": ("email",),
     "givenName": ("first_name",),
     "sn": ("last_name",),
 }
 SAML_CONFIG = {
-    "xmlsec_binary": "/usr/local/bin/xmlsec1",
-    "entityid": "http://localhost:8000/saml/metadata/",
+    "xmlsec_binary": "/usr/bin/xmlsec1",
+    "entityid": BASE_URL,
     "allow_unknown_attributes": True,
     "service": {
         "sp": {
             "name": "SURF RDE KeyServer POC",
-            "name_id_format": saml2.saml.NAMEID_FORMAT_TRANSIENT,
+            "name_id_format": saml.NAMEID_FORMAT_PERSISTENT,
             "endpoints": {
                 "assertion_consumer_service": [
-                    ("http://localhost:8000/saml/acs/", saml2.BINDING_HTTP_POST),
+                    (f"{BASE_URL}/saml/acs/", saml2.BINDING_HTTP_POST),
                 ],
                 "single_logout_service": [
-                    ("http://localhost:8000/saml/ls/", saml2.BINDING_HTTP_REDIRECT),
-                    ("http://localhost:8000/saml/ls/post", saml2.BINDING_HTTP_POST),
+                    (f"{BASE_URL}/saml/ls/", saml2.BINDING_HTTP_REDIRECT),
+                    (f"{BASE_URL}/saml/ls/post", saml2.BINDING_HTTP_POST),
                 ],
             },
-            "signing_algorithm": saml2.xmldsig.SIG_RSA_SHA256,
-            "digest_algorithm": saml2.xmldsig.DIGEST_SHA256,
+            "signing_algorithm": xmldsig.SIG_RSA_SHA256,
+            "digest_algorithm": xmldsig.DIGEST_SHA256,
             "force_authn": False,
             "name_id_format_allow_create": True,
-            "required_attributes": ["uid", "givenName", "sn", "mail"],
+            "required_attributes": ["eduPersonTargetedID", "givenName", "sn", "mail"],
             # "optional_attributes": ["eduPersonAffiliation"],
-            "want_response_signed": True,
-            "authn_requests_signed": True,
-            "logout_requests_signed": True,
+            "want_response_signed": False,
             "want_assertions_signed": True,
-            "only_use_keys_in_metadata": True,
             "allow_unsolicited": True,
         },
     },
     "metadata": {
         "remote": [
-            {"url": "https://samltest.id/saml/idp"}, # https://metadata.surfconext.nl/idp-metadata.xml
+            {
+                "url": "https://metadata.test.surfconext.nl/idp-metadata.xml"
+            },  # https://metadata.surfconext.nl/idp-metadata.xml
         ],
     },
     "debug": 1,
-    "key_file": path.join(BASEDIR, "saml", "private.key"),
-    "cert_file": path.join(BASEDIR, "saml", "public.cert"),
+    "key_file": path.join(BASE_DIR, "config", "saml", "private.key"),
+    "cert_file": path.join(BASE_DIR, "config", "saml", "public.cert"),
     "encryption_keypairs": [
         {
-            "key_file": path.join(BASEDIR, "saml", "private.key"),
-            "cert_file": path.join(BASEDIR, "saml", "public.cert"),
+            "key_file": path.join(BASE_DIR, "config", "saml", "private.key"),
+            "cert_file": path.join(BASE_DIR, "config", "saml", "public.cert"),
         }
     ],
     "contact_person": [
@@ -210,8 +211,8 @@ SAML_CONFIG = {
             ("SURF RDE KeyServer POC", "en"),
         ],
         "url": [
-            ("http://localhost:8000", "nl"),
-            ("http://localhost:8000", "en"),
+            (BASE_URL, "nl"),
+            (BASE_URL, "en"),
         ],
     },
 }
