@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Job Doesburg <job.doesburg@surf.nl>"]
 readme = "README.md"
+repository = "https://gitlab.surf.nl/filesender/rde-keyserver"
 
 [tool.poetry.dependencies]
 python = "^3.9"
