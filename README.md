@@ -42,6 +42,10 @@ The KeyServer also provides a REST API that allows users to register their RDE d
 when the user requests to register a new RDE document (via the frontend). The API expects a JSON object with the 
 enrollment parameters for the RDE document and will return these parameters if the enrollment was successful.
 
+Right now, the KeyServer does not verify the enrollment parameters. This means that any user can enroll with any 
+parameters, even invalid ones (in fact, any JSON object is accepted). This is not a problem for the POC, but should be 
+fixed in production.
+
 ## Usage
 The KeyServer provides a simple web interface that allows users to view and register their RDE documents. The web 
 interface is protected by SAML authentication. Users can register a new RDE document by clicking the "Enroll new 
