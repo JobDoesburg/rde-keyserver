@@ -8,16 +8,21 @@ User = get_user_model()
 
 
 class NewDocumentTicketManager(models.Manager):
+    """Manager for new document tickets (documents that have not been enrolled yet)"""
+
     def get_queryset(self):
         return super().get_queryset().filter(enrollment_parameters__isnull=True)
 
 
 class DocumentsManager(models.Manager):
+    """Manager for enrolled RDE documents"""
+
     def get_queryset(self):
         return super().get_queryset().filter(enrollment_parameters__isnull=False)
 
 
 def validate_enrollment_data(data):
+    """Validate enrollment data"""
     if not isinstance(data, dict):
         raise ValidationError("Enrollment data must be a dictionary")
     if (
@@ -32,6 +37,13 @@ def validate_enrollment_data(data):
 
 
 class RDEDocument(models.Model):
+    """
+    Enrolled RDE document.
+
+    If enrollment_parameters is null, there is no enrolled document (yet),
+    but a ticket is available to enroll one via the API.
+    """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     enrollment_parameters = models.JSONField(

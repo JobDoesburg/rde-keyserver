@@ -7,6 +7,8 @@ from .models import RDEDocument
 
 
 class DocumentsView(LoginRequiredMixin, ListView):
+    """View for listing enrolled documents"""
+
     model = RDEDocument
     template_name = "documents.html"
 
@@ -15,10 +17,13 @@ class DocumentsView(LoginRequiredMixin, ListView):
 
 
 class EnrollView(LoginRequiredMixin, TemplateView):
+    """Enroll view"""
+
     template_name = "enroll.html"
     ticket = None
 
     def get(self, request, *args, **kwargs):
+        """When the user visits the enroll page, create a new ticket (and delete any old ones)"""
         RDEDocument.tickets.filter(user=request.user).delete()
         self.ticket = RDEDocument.tickets.create(user=self.request.user)
         return super().get(request, *args, **kwargs)

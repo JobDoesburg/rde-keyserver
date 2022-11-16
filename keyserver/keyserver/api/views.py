@@ -12,6 +12,14 @@ class EnrollmentAPIView(APIView):
     description = "Enroll an RDE document based on a ticket"
 
     def post(self, request, ticket_id, *args, **kwargs):
+        """
+        Enroll an RDE document based on a ticket
+        :param request: the request
+        :param ticket_id: the ticket id
+        :param args: args
+        :param kwargs: kwargs
+        :return: the enrolled RDE document
+        """
         ticket = get_object_or_404(RDEDocument.tickets, id=ticket_id)
         ticket.enrollment_parameters = request.data
         ticket.save()
@@ -19,12 +27,16 @@ class EnrollmentAPIView(APIView):
 
 
 class RDEDocumentSerializer(serializers.ModelSerializer):
+    """RDE Document serializer"""
+
     class Meta:
         model = RDEDocument
         fields = ["enrollment_parameters"]
 
 
 class DocumentSearchFilter(filters.SearchFilter):
+    """RDE Document email search filter for the search API"""
+
     search_param = "email"
     search_title = "Email"
     search_description = "Email address of the user to search for"
@@ -37,6 +49,8 @@ class DocumentSearchFilter(filters.SearchFilter):
 
 
 class SearchAPIView(ListAPIView):
+    """Search API view"""
+
     name = "Key server search"
     description = "Search for RDE documents by email"
     serializer_class = RDEDocumentSerializer
