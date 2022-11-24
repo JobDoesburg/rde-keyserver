@@ -16,6 +16,8 @@ class DocumentsView(LoginRequiredMixin, ListView):
         return RDEDocument.objects.filter(user=self.request.user)
 
 
+# TODO add a delete view
+
 class EnrollView(LoginRequiredMixin, TemplateView):
     """Enroll view"""
 

@@ -26,14 +26,24 @@ def validate_enrollment_data(data):
     if not isinstance(data, dict):
         raise ValidationError("Enrollment data must be a dictionary")
     if (
-        "n" not in data
-        or "Fid" not in data
-        or "Fcont" not in data
-        or "documentName" not in data
+        "documentName" not in data
+        or "caOid" not in data
+        or "piccPublicKey" not in data
+        or "rdeDGId" not in data
+        or "rdeRBLength" not in data
+        or "rdeDGContent" not in data
+        or "securityData" not in data
+        or "mrzData" not in data
+        or "faceImageData" not in data
     ):
         raise ValidationError(
-            "Enrollment data must contain n, Fid, Fcont and documentName"
+            "Enrollment data is not valid. Missing one or more required fields"
         )
+
+    # TODO way more validation here (e.g. check that the data types are valid (hexstrings), data size, None values, etc.)
+    # Also verify the signature (if present) and the certificate (if present). Full passive authentication should be done here (we dont support active authentication yet)
+    # As key server, we might not want to store privacy sensitive data like face images, mrz data in general, or enrollment data without security data, or enrollment data from certain countries
+
 
 
 class RDEDocument(models.Model):

@@ -22,6 +22,7 @@ class EnrollmentAPIView(APIView):
         """
         ticket = get_object_or_404(RDEDocument.tickets, id=ticket_id)
         ticket.enrollment_parameters = request.data
+        # TODO validate enrollment data
         ticket.save()
         return Response(status=status.HTTP_201_CREATED, data={"id": ticket.id})
 
