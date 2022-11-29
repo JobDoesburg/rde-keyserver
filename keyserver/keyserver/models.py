@@ -27,7 +27,7 @@ def validate_enrollment_data(data):
         raise ValidationError("Enrollment data must be a dictionary")
     if (
         "documentName" not in data
-        or "caOid" not in data
+        or "caOID" not in data
         or "piccPublicKey" not in data
         or "rdeDGId" not in data
         or "rdeRBLength" not in data
