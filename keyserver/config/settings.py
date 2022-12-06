@@ -16,11 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-nta2^r4xet@@6r#*ue*%a8(4v2&_2%&6%xe1euxm_(lx1#zay^"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["keyserver.rde.jobdoesburg.dev", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["keyserver.rde.filesenderbeta.surf.nl", "localhost", "127.0.0.1"]
 
-BASE_URL = "https://keyserver.rde.jobdoesburg.dev"
+BASE_URL = "https://keyserver.rde.filesenderbeta.surf.nl"
 
 # Application definition
 
@@ -145,7 +145,7 @@ SAML_ATTRIBUTE_MAPPING = {
     "sn": ("last_name",),
 }
 SAML_CONFIG = {
-    "xmlsec_binary": "/usr/bin/xmlsec1",
+    "xmlsec_binary": "/usr/local/bin/xmlsec1",
     "entityid": BASE_URL,
     "allow_unknown_attributes": True,
     "service": {
