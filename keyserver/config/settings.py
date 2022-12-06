@@ -145,7 +145,7 @@ SAML_ATTRIBUTE_MAPPING = {
     "sn": ("last_name",),
 }
 SAML_CONFIG = {
-    "xmlsec_binary": "/usr/local/bin/xmlsec1",
+    "xmlsec_binary": "/usr/bin/xmlsec1",
     "entityid": BASE_URL,
     "allow_unknown_attributes": True,
     "service": {
