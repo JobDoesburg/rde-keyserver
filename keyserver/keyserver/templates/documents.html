@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12">
                 <h1>My RDE Documents</h1>
-                <p>View your enrolled RDE documents.</p>
+                <p>View your enrolled RDE documents. Your email address is: <code class="user-select-all">{{ request.user.email }}</code></p>
                 <a href="{% url 'enroll' %}" type="button" class="btn btn-primary my-3">Enroll new document</a>
                 <div class="accordion" id="documents">
                     {% for document in object_list %}
