@@ -8,19 +8,15 @@ from saml2 import saml
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-nta2^r4xet@@6r#*ue*%a8(4v2&_2%&6%xe1euxm_(lx1#zay^"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
-ALLOWED_HOSTS = ["keyserver.rde.filesenderbeta.surf.nl", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")]
 
-BASE_URL = "https://keyserver.rde.filesenderbeta.surf.nl"
+BASE_URL = os.environ.get("DJANGO_BASE_URL")
 
 # Application definition
 
@@ -105,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Amsterdam"
 
 USE_I18N = True
 
@@ -127,7 +123,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # SAML2
 SAML_SESSION_COOKIE_NAME = "saml_session"
-SESSION_COOKIE_SECURE = False  # False for development
+SESSION_COOKIE_SECURE = not DEBUG
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "djangosaml2.backends.Saml2Backend",
@@ -166,7 +162,6 @@ SAML_CONFIG = {
             "force_authn": False,
             "name_id_format_allow_create": True,
             "required_attributes": ["eduPersonTargetedID", "givenName", "sn", "mail"],
-            # "optional_attributes": ["eduPersonAffiliation"],
             "want_response_signed": False,
             "want_assertions_signed": True,
             "allow_unsolicited": True,
@@ -175,11 +170,11 @@ SAML_CONFIG = {
     "metadata": {
         "remote": [
             {
-                "url": "https://metadata.test.surfconext.nl/idp-metadata.xml"
-            },  # https://metadata.surfconext.nl/idp-metadata.xml
+                "url": os.environ.get("DJANGO_SAML_IDP_METADATA_URL"),
+            },
         ],
     },
-    "debug": 1,
+    "debug": 1 if DEBUG else 0,
     "key_file": path.join(BASE_DIR, "config", "saml", "private.key"),
     "cert_file": path.join(BASE_DIR, "config", "saml", "public.cert"),
     "encryption_keypairs": [
