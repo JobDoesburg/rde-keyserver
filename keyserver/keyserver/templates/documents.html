@@ -19,6 +19,7 @@
                         </h2>
                         <div id="document-{{ document.id }}" class="accordion-collapse collapse" aria-labelledby="heading-document-{{ document.id }}" data-bs-parent="#documents">
                             <div class="accordion-body">
+                                <a href="{% url "delete" document %}" type="button" class="btn btn-primary">Delete</a><br>
                                 <strong>Enrollment parameters:</strong><br>
                                 <code class="user-select-all">{{ document.enrollment_parameters }}</code>
                             </div>

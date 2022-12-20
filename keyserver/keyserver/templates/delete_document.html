@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+    Delete document
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Delete document {{ object.enrollment_parameters.documentName }}</h1>
+                <form method="post">{% csrf_token %}
+                    <p>Are you sure you want to delete "{{ object.enrollment_parameters.documentName }}" ({{ object.id }})?</p>
+                    <input type="submit" value="Confirm" class="btn btn-danger">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

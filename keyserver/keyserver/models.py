@@ -45,7 +45,6 @@ def validate_enrollment_data(data):
     # As key server, we might not want to store privacy sensitive data like face images, mrz data in general, or enrollment data without security data, or enrollment data from certain countries
 
 
-
 class RDEDocument(models.Model):
     """
     Enrolled RDE document.
