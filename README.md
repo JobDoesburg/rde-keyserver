@@ -6,7 +6,7 @@ The key server also provides a REST API that allows other applications to retrie
 User authentication is handled via SAML.
 
 ## Installation
-Probably you want to use the [RDE POC server config](https://gitlab.surf.nl/filesender/rde-poc-server-config) repository to install the keyserver.
+Probably you want to use the [RDE POC server config](https://github.com/JobDoesburg/rde-poc-server-config) repository to install the keyserver.
 This uses Docker and uwsgi to run the keyserver, which is configured to run with 1 worker and 10 threads.
 
 The following environment variables can be passed to the container:
